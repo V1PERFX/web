@@ -9,7 +9,7 @@
     <title>Consumindo Web API</title>
 </head>
 
-<body>
+<body onload="carregarClientes()">
     <div class="container">
         <h2 class="text-center text-info pt-3">Consumindo Web API</h2>
         <p>Aprendendo a como consumir uma Web API.</p>
@@ -26,19 +26,41 @@
                         <th>Sexo</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Rafael</td>
-                        <td>Fiuza</td>
-                        <td>28</td>
-                        <td>São Paulo</td>
-                        <td>BR</td>
-                        <td>Masculino</td>
-                    </tr>
+                <tbody id="clientes">
+                    <!--tabela montada no script-->
                 </tbody>
             </table>
         </div>
     </div>
+    <!--script para consumir Web API-->
+    <script>
+        function buscarClientes(){
+            var url = "https://demo2608287.mockable.io/clientes";
+            var httpReq = new XMLHttpRequest();
+            httpReq.open("GET", url, false);
+            httpReq.send(null);
+            var obj = JSON.parse(httpReq.responseText);
+            return obj;
+        }
+
+        function carregarClientes(){
+            var cli = buscarClientes();
+            console.log(cli);
+
+            $.each(cli, function(index, item){
+                var linha = "<tr>";
+                linha += "<td>" + item.nome + "</td>";
+                linha += "<td>" + item.sobrenome + "</td>";
+                linha += "<td>" + item.idade + "</td>";
+                linha += "<td>" + item.cidade + "</td>";
+                linha += "<td>" + item.pais + "</td>";
+                linha += "<td>" + item.sexo + "</td>";
+                linha += "</tr>";
+                $("#clientes").append(linha);
+            });
+        }
+    </script>
+    <!--/script para consumir Web API-->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
